@@ -1,28 +1,29 @@
 import RPi.GPIO as GPIO
 import pygame
+import time
 
 # config the setmode
 GPIO.setmode(GPIO.BOARD)
 
 # Define the GPIO-pin for the doorbell botton
-drukknop_pin = 12
+button_pin = 12
 
-# Config the GPIO-pin for ibput
-GPIO.setup(drukknop_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+# Config the GPIO-pin for input
+GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-# Initilize the pygame mixer
+# Initialize the pygame mixer
 pygame.mixer.init()
 
-# function that play's the sound
-def knop_ingedrukt(channel):
-    print("Drukknop ingedrukt")
-    # Speel het geluidsbestand af
+# function that plays the sound
+def button_pressed():
+    print("Button pressed")
+    # Play the sound file
     pygame.mixer.music.load("deurbel.mp3")
     pygame.mixer.music.play()
 
 # Detect the button with interrupt
-GPIO.add_event_detect(drukknop_pin, GPIO.FALLING, callback=knop_ingedrukt, bouncetime=300)
+GPIO.add_event_detect(button_pin, GPIO.FALLING, callback=button_pressed, bouncetime=300)
 
 # run the script forever. 
 while True:
-    pass
+    time.sleep(0.1)
